@@ -3,9 +3,22 @@ const units = ['', '拾', '佰', '仟'];
 const sections = ['', '万', '亿', '万亿'];
 
 function numberToChinese(num) {
+    // 处理空输入
+    if (!num || num.trim() === '') {
+        return '请输入数字金额';
+    }
+
+    // 移除所有空格和逗号
+    num = num.toString().replace(/[,\s]/g, '');
+    
     // 处理非法输入
     if (!/^\d+(\.\d{1,2})?$/.test(num)) {
-        return '请输入正确的金额格式';
+        return '请输入正确的金额格式（如：23,324.32 或 23324.32）';
+    }
+
+    // 检查数字范围
+    if (parseFloat(num) > 9999999999999.99) {
+        return '数字太大，请输入小于万亿的金额';
     }
 
     // 分割整数和小数部分
@@ -88,4 +101,4 @@ document.getElementById('numberInput').addEventListener('keypress', function(e) 
     if (e.key === 'Enter') {
         convert();
     }
-}); 
+});
